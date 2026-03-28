@@ -1,137 +1,127 @@
-# 🤖 FB Auto Register — OpenClaw + AdsPower 自動註冊 Facebook 帳號
+# 📱 FB Auto Register — AdsPower 自動註冊 FB 帳號
 
-> AI Agent 自動完成 85% 的 FB 註冊流程，55 秒搞定（手動要 10-15 分鐘）
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=3,8,15&height=180&section=header&text=📱%20FB%20Auto%20Register&fontSize=40&fontColor=fff&animation=fadeIn&fontAlignY=35&desc=AdsPower%20×%20龍蝦%20自動養號&descSize=18&descAlignY=55" width="100%"/>
+</p>
+
+<p align="center">
+  🧑‍💻 Created by <a href="https://instagram.com/10000allison">Allison (@10000allison)</a> | CTMaxs 龍蝦自動化團隊
+</p>
 
 ---
 
-## 這是什麼？
+## 🔥 一句話說完
 
-一套基於 **OpenClaw（AI Agent）+ AdsPower（指紋瀏覽器）** 的自動化 Facebook 帳號註冊工具。
+**龍蝦 + AdsPower = 批量註冊 FB 帳號，每個帳號獨立指紋、獨立 IP，像真人一樣。**
 
-AI 負責思考和操作，AdsPower 負責提供獨立的瀏覽器環境，讓每個帳號看起來都像來自不同裝置的真人。
+---
 
-## 🎯 功能
+## ❌ 手動養號的痛
 
-- ✅ 自動填寫註冊表單（姓名、Email、密碼）
-- ✅ 自動選擇生日和性別（處理 Facebook 的特殊 ARIA UI）
-- ✅ 自動完成 Email 驗證
-- ✅ 自動處理安全檢查點
-- ✅ 模擬真人打字速度（delay 50ms）
-- ✅ 每個帳號獨立指紋環境（Canvas、WebGL、AudioContext）
-- ⚠️ 影片自拍驗證需人工介入（觸發率 5-15%）
+- 一個一個註冊，要填資料、驗證、等待
+- 用同一台電腦註冊多個帳號 → 被 FB 關聯封號
+- 瀏覽器指紋相同 → FB 秒偵測
+- 沒有代理 IP → 同一個 IP 多帳號 = 全滅
+- 養到 50 個帳號要花幾天
 
-## 🏗️ 架構
+## ✅ 用這個模組之後
 
-```
-OpenClaw AI Agent
-    │
-    ▼
-AdsPower Local API (port 50325)
-    │
-    ▼
-啟動 Browser Profile（獨立指紋）
-    │
-    ▼
-Puppeteer CDP 控制
-    │
-    ▼
-Facebook 註冊流程
-```
+- AdsPower 每個帳號獨立瀏覽器指紋
+- 龍蝦用 CDP 自動操作每個瀏覽器
+- 代理 IP 自動分配（每 6 帳號一個 IP）
+- 註冊流程全自動：填資料 → 驗證 → 完善個資
+- 18 個帳號 = 18 個「真人」
 
-## 📋 前提需求
+---
 
-| 工具 | 用途 | 必要 |
+## 🎯 適合誰？
+
+| 身份 | 痛點 | 解法 |
 |------|------|------|
-| [AdsPower](https://www.adspower.net/share/Qd0snp) | 指紋瀏覽器 + 帳號隔離 | ✅ |
-| [OpenClaw](https://openclaw.ai) | AI Agent 框架 | ✅ |
-| Node.js 18+ | 執行腳本 | ✅ |
-| 住宅 IP 代理 | 降低驗證觸發率 | 🔶 強烈建議 |
-| Gmail 帳號 | 接收驗證碼 | ✅ |
+| 社群行銷 | 需要大量帳號互動 | 批量自動註冊 |
+| 電商老闆 | 廣告帳號被封要備用 | 養一批備用帳號 |
+| 社團經營 | 需要多帳號按讚留言 | 配合 FollowBunny 使用 |
+| 代操公司 | 客戶多需要多帳號 | 規模化管理 |
 
-## 🚀 快速開始
+---
 
-```bash
-# 1. Clone
-git clone https://github.com/maxtsai01/fb-auto-register.git
-cd fb-auto-register
+## 🏗️ 技術架構
 
-# 2. 安裝依賴
-npm install
-
-# 3. 設定帳號資料
-cp config.example.json config.json
-# 編輯 config.json 填入你的資料
-
-# 4. 確保 AdsPower 已啟動
-# AdsPower API 預設 port: 50325
-
-# 5. 執行
-node register.js
+```
+🦞 龍蝦（OpenClaw）
+  ↓ API 呼叫
+🌐 AdsPower（port 50325）
+  ├── 帳號 1（獨立指紋 + IP-A）
+  ├── 帳號 2（獨立指紋 + IP-A）
+  ├── ...
+  ├── 帳號 6（獨立指紋 + IP-A）
+  ├── 帳號 7（獨立指紋 + IP-B）
+  └── ...
+  ↓ CDP 控制每個瀏覽器
+📱 FB 註冊流程
+  ├── 填寫個人資料
+  ├── 手機/Email 驗證
+  ├── 完善個資（頭像、背景）
+  └── 養號行為模擬
 ```
 
-## ⚙️ 設定檔說明
+---
 
-```json
-{
-  "adspower": {
-    "apiBase": "http://localhost:50325",
-    "apiKey": "你的 AdsPower API Key"
-  },
-  "accounts": [
-    {
-      "profileId": "AdsPower Profile ID",
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john@gmail.com",
-      "password": "安全密碼",
-      "birthday": { "month": "Apr", "day": "15", "year": "1990" },
-      "gender": "male"
-    }
-  ],
-  "options": {
-    "typingDelay": 50,
-    "proxy": "socks5://IP:PORT"
-  }
-}
-```
+## 🔧 包含什麼？
 
-## 📊 成功率
+### Public（你現在看到的）
+- ✅ AdsPower + OpenClaw 整合架構說明
+- ✅ 帳號管理最佳實踐
+- ✅ IP 分配策略
+- ✅ 養號注意事項
 
-| 環境 | 影片驗證觸發率 | 整體成功率 |
-|------|--------------|-----------|
-| 數據中心 IP + 普通瀏覽器 | 60-80% | 低 |
-| 住宅 IP + AdsPower | 5-15% | 高 |
-| 住宅 IP + AdsPower + 養號 | <5% | 極高 |
+### Private Core（付費版）
+- 🔒 完整自動註冊腳本（Node.js）
+- 🔒 AdsPower API 整合 Skill
+- 🔒 自動養號行為模擬（每日登入、瀏覽、互動）
+- 🔒 批量管理 Dashboard
+- 🔒 封號應對 SOP
+- 🔒 代理 IP 設定教學（IPFoxy/Oxylabs）
+
+---
 
 ## ⚠️ 免責聲明
 
-> 本工具僅供學習和研究目的。
-> - 使用者需自行遵守 Facebook 服務條款
-> - 帳號被封屬於第三方平台行為，非本工具責任
-> - 不包含一對一技術支援
-> - 需要客製化？用 OpenClaw 自己改，或付費委託
-
-## 🔗 相關資源
-
-- [AdsPower Agentic Browser 官方介紹](https://www.adspower.com/blog/adspower-ai-agentic-browser)
-- [OpenClaw + AdsPower 自動註冊實測](https://www.adspower.com/blog/can-ai-agents-register-facebook-accounts-automatically)
-- [OpenClaw + AdsPower 自動登入 Google](https://www.adspower.com/blog/use-openclaw-ai-agent-to-login-google-account-with-adspower)
+> 本工具僅供合法行銷用途。使用者需遵守 Facebook 服務條款。CTMaxs 不對因違反平台規則導致的帳號封禁負責。
 
 ---
 
-## 💰 完整版
+## 🦞 龍蝦模組商店
 
-這個 Public 版本是架構說明和概念展示。
-
-**完整版包含：**
-- 可直接執行的註冊腳本
-- Email 驗證碼自動擷取
-- 安全檢查點自動處理
-- 批量註冊支援
-- 失敗重試機制
-
-👉 私訊 [@10000allison](https://www.instagram.com/10000allison/) 取得完整版
+| 模組 | 說明 | 連結 |
+|------|------|------|
+| 📱 FB Auto Register | AdsPower 自動養號 | 👈 你在這裡 |
+| 🐰 FollowBunny | 社團自動互動 | [前往](https://github.com/maxtsai01/followbunny-public) |
+| 🤖 Agent Orchestrator | 多代理協作 | [前往](https://github.com/maxtsai01/agent-orchestrator) |
+| 🤝 Lobster × Manus | AI 雙引擎協作 | [前往](https://github.com/maxtsai01/lobster-manus) |
+| 🛒 Lobster × 1Shop | 電商自動化 | [前往](https://github.com/maxtsai01/lobster-1shop) |
+| 🎬 Video Analyzer | AI 影片情報分析 | [前往](https://github.com/maxtsai01/video-analyzer) |
+| 🌈 Rainbow Life | 彩虹人生性格分析 | [前往](https://github.com/maxtsai01/rainbow-life) |
+| 🖼️ AI Image Studio | AI 圖片處理 | [前往](https://github.com/maxtsai01/ai-image-studio) |
+| 🦞 AI Warbook | 龍蝦兵法 | [前往](https://github.com/maxtsai01/lobster-ai-warbook) |
 
 ---
 
-*Built with 🦞 OpenClaw + 🔒 AdsPower*
+## 💰 定價
+
+| 方案 | 價格 | 內容 |
+|------|------|------|
+| 免費試用 | NT$0 | Public README + 架構說明 |
+| 完整版 | 洽詢 | Private Core + 自動化腳本 |
+
+👉 [立即免費領取](https://lumaint.1shop-app.com/lobster-store)
+
+---
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=3,8,15&height=100&section=footer" width="100%"/>
+</p>
+
+<p align="center">
+  Created by <a href="https://instagram.com/10000allison">Allison</a> | CTMaxs 龍蝦自動化團隊
+</p>
